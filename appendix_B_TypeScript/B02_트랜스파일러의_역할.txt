@@ -1,0 +1,10 @@
+B.2 트랜스파일러의 역할
+
+웹브라우저 - JavaScript 언어만 실행 가능
+	   - TypeScript를 웹이나 Node.js에서 실행되기 전에 JavaScript로 변환 필요
+
+트랜스파일(Transpile) : 다른 언어로 바꿈. 컴파일이라는 단어를 쓰기도 함.
+트랜스파일러(transpiler) : 트랜스파일에 사용되는 툴
+
+http://www.typescriptlang.org/play/
+여기서 TypeScript를 JavaScript로 바꾸는 것을 볼 수 있다.

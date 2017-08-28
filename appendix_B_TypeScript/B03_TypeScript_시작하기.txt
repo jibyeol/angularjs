@@ -1,0 +1,42 @@
+B.3 TypeScript 시작하기
+
+>> npm i -g typescript
+타입스크립트 설치
+-g 옵션으로 전역에 설치함
+
+>> tsc -v
+>> tsc --version
+버전 확인
+
+>> tsc main.ts
+main.ts를 main.js로 트랜스파일
+
+>> tsc main.ts --sourcemap
+TypeScript를 디버깅하기위해 소스맵을 생성할 수도 있다.
+소스맵을 같이 생성하려면 위처럼 하면된다.
+그러면 크록 개발자도구에서 TypeScript를 디버깅할 수 있다.
+
+>> tsc main.ts -- t ES5
+기본값은 ES3이고, ES5, ES6으로 변경하려면 위처럼 하면 된다.
+
+코드를 변환하면서 .js파일을 만들지 않고 메모리에 결과물을 생성하려면 --noEmit 옵션ㅇ르 사용한다.
+--watch 옵션이나 -w 옵션을 사용하면 컴파일러가 파일이 변경되는 것을 자동으로 감지하고 다시 컴파일한다.
+
+>> tsc -w *.ts
+모든 .ts 파일을 모니터링하면서 워피모드를 시작
+
+TypeScript를 컴파일할 때 지정하는 옵션은 미리 파일로 만들어둘 수 있다.
+
+[ tsconfigjson ]
+{
+	"compilerOpions" : {
+		"target" : "es5",
+		"module" : "commonjs",
+		"emitDecoratorMetadata" : true,
+		"experimentalDecorators" : true,
+		"rootDir" : ".",
+		"outDir : "./build"
+	}
+}
+
+./build 폴더에 ES5 문법의 JavaScript 파일로 생성된다.
