@@ -32,3 +32,34 @@ function calcTax (state, income, dependents) {
 }
 
 let tax = calcTax('NJ', 50000, 2);
+let tax2 = calcTax('JN', 50000, 'two'); // 실행하기 전까지 문제가 되는 것을 알 수 없다.
+
+function calcTax2 (state : string, income : number, dependents : number) : number {
+	if(state === 'NY'){
+		return income * 0.06 - dependents * 500;
+	} else if(state === 'NJ') {
+		return income * 0.05 - dependents * 300;
+	}
+}
+
+let tax3 = calcTax2('JN', 50000, 'two'); // 컴파일 에러가 난다!
+let tax4 : string = calcTax2('JN', 50000, 'two'); // 실행하면 컴파일러에서 에러를 발생시킴
+
+// B.5.2 인자 기본값
+// 인자 기본값은 마지막 인자부터 채워져야 한다!
+// 첫 번? 인자만 기본값을 넣어주면 동작하지 않는다.
+
+function calcTax3(income : number, dependents : number, state : string = 'NY') : number {
+	if(state === 'NY'){
+		return income * 0.06 - dependents * 500;
+	} else if(state === 'NJ') {
+		return income * 0.05 - dependents * 300;
+	}
+}
+
+let tax5 = calcTax3(50000, 2);
+let tax6 = calcTax3(50000, 2, 'NY');
+
+// B.5.3 옵션 인자
+// 생략할 수 있는 함수의 인자 이름 뒤에 ?를 붙여서 옵션 인자로 지정할 수 있다.
+// 마지막부터 채워져야한다.
