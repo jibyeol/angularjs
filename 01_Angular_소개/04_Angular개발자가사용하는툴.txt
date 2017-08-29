@@ -1,0 +1,5 @@
+Babel : ES6을 ES5로 변환
+Webpack : 여러 개로 나뉜 파일과 의존 관계에 있는 라이브러리를 하나의 파일로 묶어줌
+SystemJS : ES6, AMD, CommonJS 표준에 맞게 적성된 모듈을 불러오는 모듈 로더
+npm : JavaScript 라이브러리나 프레임워크를 설치할 수 있는 패키지 매니저
+yarm : npm과 비슷하지만, 속도가 빠름

@@ -1,0 +1,33 @@
+업무 로직 구현 : 클래스 사용. 의존성 주입은 프레임워크에서 인스턴스를 생성해 해당 컴포넌트에 주입
+
+UI 컴포넌트 구현 : 클래스에 @Component 붙임
+
+컴포넌트에 렌더링될 HTML 템플릿 정의 : template또는 templateUrl 사용
+
+HTML 조작 : *nglf나 *NgFor와 같은 HTML 조작 디렉티브를 사용하거나 @Directive 사용해서 별개의 클래스 만듦
+
+현재 객체에서 클래스 변수 참조 : this 사용
+
+단일 페이지 앱에서 내비게이션 구현 : 라우터 사용해서 컴포넌트와 URL 연결. 컴포넌트의 템플릿이 렌더링될 위치를 <router-outlet> 태그로 지정
+
+컴포넌트 프로퍼티를 UI에 표시 : 이중 중괄호 {{}} 안에 클래스 프로퍼티 사용
+
+컴포넌트 프로퍼티를 UI와 바인딩 : 대괄호를 사용해서 프로퍼티 바인딩 (ex. <input [value]="greeting">)
+
+UI 이벤트 처리 : 이벤트 이름을 괄호로 감싸고 핸들러 지정 (click)=""
+
+양방향 바인딩 : [( )] 표기를 사용 (ex. <input[(ngModel)]="myComponentProperty">)
+
+컴포넌트에 데이터 전달하기 : @Input 어노테이션을 사용해서 외부 값과 연결
+
+컴포넌트에서 데이터 받기 : @Output 어노테이션을 사용하고 EventEmitter를 이용해서 이벤트 발생
+
+HTTP 요청 : 컴포넌트에 Http 객체를 주입하고, HTTP 함수를 사용 (ex. this.http.get('/products'))
+
+HTTP 응답 처리 : subscribe() 함수를 사용해서 옵저버블 스트림 처리  (ex. this.http.get('/products').subscribe(...))
+
+HTML 일부를 자식 컴포넌트에 전다하기 : 자식 템플릿에 <ng-content> 태그 사용
+
+컴포넌트 상태가 변경되는 것 가로채기 : 컴포넌트 생명주기 함수를 사용
+
+배포 : WebPack과 같은 번들러로 애플리케이션 파일과 프레임워크, 라이브러리를 JavaScript로 번들링

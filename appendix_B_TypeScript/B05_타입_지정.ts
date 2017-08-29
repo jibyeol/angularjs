@@ -63,3 +63,60 @@ let tax6 = calcTax3(50000, 2, 'NY');
 // B.5.3 옵션 인자
 // 생략할 수 있는 함수의 인자 이름 뒤에 ?를 붙여서 옵션 인자로 지정할 수 있다.
 // 마지막부터 채워져야한다.
+
+function calcTax4(income : number, state : string = 'NY', dependents? : number) : number {
+    let deduction : number;
+    
+    if(dependents) { // 옵션의 인자가 전달되었는지 확인 필요!
+        dedeuction = dependents * 500;
+    } else {
+        deduction = 0;
+    }
+    
+    if(state === 'NY') {
+        return income * 0.06 - deduction;
+    } else if(state === 'NJ') {
+        return income * 0.05 - deduction;
+    }
+}
+
+console.log('Your tax is ', calcTax4(50000));
+console.log('Your tax is ', calcTax4(50000, 'NJ'));
+console.log('Your tax is ', calcTax4(50000, 'NJ', 2));
+
+// B.5.4 화살표 함수 표현식
+let getName = () => 'John Smith';
+console.log(getName());
+
+let getNameUpper = () => {
+    let name = 'Peter Luger'.toUpperCase();
+    return naem;
+}
+console.log(getNameUpper());
+// 화살표 함수 표현식은 this 키워드 문제를 해결하는 방법이기도 하다.
+
+function StockQuoteGeneratorArrow(symbol : string) {
+    this.symbol = symbol;
+    
+    setInterval(() => {
+        console.log('StockQuoteGeneratorArrow. The price quote for ' + this.symbol + ' is ' + Math.random());
+    }, 1000);
+}
+let stockQuoteGeneratorArrow = new StockQuoteGeneratorArrow('IBM');
+
+function StockQuoteGeneratorAnonymous(symbol : string) {
+    this.symbol = symbol;
+    
+    setInterval(function() {
+        console.log('StockQuoteGeneratorArrow. The price quote for ' + this.symbol + ' is ' + Math.random());
+    }, 1000);
+}
+let stockQuoteGeneratorAnonymous = new StockQuoteGeneratorAnonymous('IBM');
+
+// stockQuoteGeneratorArrow은 IBM, stockQuoteGeneratorAnonymous는 undefined 가리킴
+// 아래는 this가 window 객체가 됨.
+
+
+// 함수 오버로딩
+// JavaScript는 지원하지 않음
+// TypeScript는 지원하지만 결국 JavaScript로 변환되면서 하나로 합쳐진다.
