@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/core-js@2.4.1/client/shim.min.js"></script><!-- 폴리필 : 클래스 데코레이터 사용하려고 -->
+    <script src="https://unpkg.com/zone.js@0.8.5"></script><!-- Zone.js : Angular의 변화 감지 매커니즘 -->
+    <script src="https://unpkg.com/systemjs@0.19.47/dist/system.src.js"></script><!-- SystemJS : 모듈 로더 -->
+    <script src="https://unpkg.com/typescript@2.3.3"></script><!-- JavaScript -> TypeScript 변환 -->
+
+    <script>
+        System.config({ // SystemJS 모듈 로더가 동작하는 환경 설정
+            transpiler : 'typescript',
+            map : { // SystemJS 동작에 필요한 패키지 CDN에서 가져옴
+                'rxjs' : 'https://unpkg.com/rxjs@5.3.0',
+                '@angular/core' : 'https://unpkg.com/@angular/core@4.1.0',
+                '@angular/common' : 'https://unpkg.com/@angular/common@4.1.0',
+                '@angular/compiler' : 'https://unpkg.com/@angular/compiler@4.1.0',
+                '@angular/platform-browser' : 'https://unpkg.com/@angular/platform-browser@4.1.0',
+                '@angular/platform-browser-dynamic' : 'https://unpkg.com/@angular/platform-browser-dynamic@4.1.0'
+            }
+        });
+        System.import('main.ts'); // 메인 모듈 실행하도록 main.ts 로드
+    </script>
+</head>
+    <body>
+        <hello-world></hello-world> <!-- 컴포넌트가 표시될 위치 지정. 셀렉터와 템플릿은 main.ts에 정의 -->
+    </body>
+</html>

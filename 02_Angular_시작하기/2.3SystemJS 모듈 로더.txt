@@ -1,0 +1,30 @@
+2.3.1 모듈 로더
+SystemJS
+폴리필
+Webpack
+
+2.3.2 모듈로더 vs <script> 태그
+<script> 개발자가 관리해야함. 시간이 지나 필요없는 경우도 있는지, 삭제하지 않으면 불필요한 네트워크 부하가 일어남
+순서가 문제될 수 있다.
+
+모듈로더로 사용하는 모든 모듈을 찾아서 하나의 파일로 번들링할 수 있다.
+
+
+2.3.3 SystemJS 시작하기
+
+System.import('./my-module.js'); // 모듈 이름 혹은 파일의 경로
+System.import('@angular2/core');
+
+모듈 이름을 전달하면, System.config()나 systemjs.config.js에 설정된 정보 바탕으로 모듈 찾음
+
+import 함수는 Promise 객체를 반환하여 예외를 처리할 수 있다.
+
+// lib.js
+export let foo = 'foo';
+
+// main.js
+System.import('./lib.js').then(libModule => {
+    libModule.foo === 'foo'; // true
+});
+
+System.import 는 원하는 시점에 불러올 수 있다.

@@ -38,7 +38,7 @@ let anEmployee : IPerson = {
 
 // B.8.2 추상 클래스로 사용하기
 
-interface IPayable {
+interface IPayable { // 메소드 정의
 	increasePay (percent : number) : boolean
 }
 
@@ -47,9 +47,72 @@ class Person {
 	constructor(){}
 }
 
-class Employee extends Person implements IPayable {
+class Employee extends Person implements IPayable { // 동시에 여러 인터페이스 상속받을 수 있다.
 	increasePay(percent : number) : boolean {
 		console.log('Increasing salary by ' + percent);
 		return true;
 	}
 }
+
+class Contractor implements IPayable {
+    increaseCap : number = 20;
+    
+    increasePay(percent : number) : boolean {
+        if(percent < this.increaseCap) {
+            console.log('Increasing hourly rate by ' + percent)'
+            return true;
+        }
+        else {
+            console.log('Sorry, the increase cap for contractors is ' + percent)'
+            return false;
+        }
+    }
+}
+
+let workers : Array<IPayable> = [];
+workers[0] = new Employee();
+workers[1] = new Contractor();
+
+workers.forEach(worker => worker.increasePay(30));
+
+// B.8.3 실행할 수 있는 인터페이스
+// 익명함수를 사용하면, 실행할 수 있는 인터페이스를 정의할 수 있다.
+
+(percent : number) : boolean;
+// number를 받아 boolean을 반환하는 익명함수
+
+interface {
+    (percent : number) : boolean;
+}
+
+class Person {
+    constructor(private balidator : IPayable) {}
+    
+    increasePay(percent : number) : boolean {
+        return this.validator(percent);
+    }
+}
+
+const forEmployee : IPayable = (percent) => {
+    console.log('Increasing salary by ', percent);
+    return true;
+};
+
+const forContractors : IPayable = (percent) => {
+    const increaseCap : number = 20;
+    
+    if(percent < this.increaseCap) {
+        console.log('Increasing hourly rate by ' + percent)'
+        return true;
+    }
+    else {
+        console.log('Sorry, the increase cap for contractors is ' + percent)'
+        return false;
+    }
+}
+
+const workers : Arrya<Person> = [];
+workers[0] = new Person(forEmployees);
+workers[1] = new Person(forConstractors);
+
+workers.forEach(worker => worker.increasePay(30));
