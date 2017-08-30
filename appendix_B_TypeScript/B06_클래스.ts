@@ -76,3 +76,19 @@ console.log('Last name : ' + p3.lastName + ' SSN : ' + p3._ssn);
 // this 키워드는 생략할 수 없다!!
 
 // B.6.3 상속
+
+class Employee extends Person3 {
+	department : string; // 프로퍼티 선언
+	
+	constructor (firstName : string, lastName : string,
+			age : number, _ssn : string, department : string) {
+		super(firstName, lastName, age, _ssn); // 부모 클래스의 생성자를 반드시 호출해야함
+		this.department - department;
+	}
+}
+
+// 부모 클래스에 있는 메소드를 자식 클래스에서 사용하려면 클래스에 구현된 메소드를 참조하는 것처럼
+// this를 사용하면 된다.
+// 하지만, 명시적으로 부모클래스를 지정해서 함수를 사용하려면 super를 사용하면 된다.
+
+// super : 부모클래스의 생성자 호출, 메소드 오버라이딩 한 경우 부모 것 쓸때
