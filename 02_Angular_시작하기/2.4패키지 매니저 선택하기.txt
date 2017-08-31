@@ -1,0 +1,41 @@
+패키지 매니저 : 라이브러리와 프레임워크, 이들에서 요구하는 또 다른 라이브러리를 관리하는 것
+
+package.json
+
+dependencies
+	라이브러리 이름 뒤에 버전이붙음. ^ 표시는 지정된 버전이나 그 이상이 필요하다는 것을 의미
+devDependencies : 개발 환경에서만 필요한 라이브러리 (운영환경 X)
+
+2.4.1 npm과 jspm 비교
+npm 단점
+ - 중첩된 의존성 : 3에서 해결되었지만, 문제가 발생하면, 다시 이전의 중첩된 의존 방식을 사용한다.
+jspm
+ - 동등한 계층으로 의존성 관리
+ - 패키지를 로컬에 저장하지 않는다. 실행되기 전에 수백 개의 파일을 불러올 수 있다.
+ - npm 저장소나 github 저장소의 패키지를 바로 사용할 수 없다. 패키지도 조금밖에 없다.
+
+2.4.2 npm vs. yarn
+npm
+ - 느림
+yarn
+ - package.json과 node_module을 그대로 사용하면서 빨라짐
+
+2.4.3 yarn으로 Angular 프로젝트 시작하기
+5.angular-seed폴더
+> npm install --global yarn
+yarn을 설치하고
+> yarn init -y
+package.json 파일을 만듦
+
+이렇게 만든 설정파일은 yarn 저장소로 배포하거나 다른 프로젝트의 패키지를 의존성으로 설치할 때 사용한다.
+
+dependencies, devDependencies를 추가하고
+> yarn install
+실행해서 패키지와 의존성을 모두 내려받아 node_modules 폴더에 설치한다.
+
+index.html을 작성한다.
+script는 모듀 node_module 폴더이다!
+
+ts파일 모두 만들고
+> yarn start
+를 하면 서버가 시작된다.
