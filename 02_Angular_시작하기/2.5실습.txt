@@ -1,0 +1,52 @@
+2.5.1 프로젝트 설정
+> yarn add -D bootstrap
+> yarn add -D jquery
+bootstrap과 jquery를 설치한다.
+-D를 붙이면, 패키지를 설치하면서 package.json의 devDpendencies 항목에 해당 패키지를 추가한다.
+
+system.config.js 파일은 index.html에서 불러옴
+SystemJS 설정 파일에서 app 패키지를 정의해서 index.html 파일에서 
+<script>System.import('app')</script>
+이렇게 사용하면 app 폴더의 main.ts를 불러올 수 있다.
+
+2.5.2 첫 페이지 구성하기
+
+// application.component.ts
+@Component({
+    selector : 'auction-application',
+    templateUrl : 'app/components/application/application.component.html',
+    styleUrls : ['app/components/application/application.component.css'],
+    encapsulation : ViewEncapsulation.None
+})
+export default class ApplicationComponent {
+    products : Array<Product> = [];
+
+    constructor(private productService : ProductService) {
+        this.products = productService.getProducts();
+    }
+}
+
+여기서 ProductService를 주입받는다.
+이 객체가 주입되려면 프로바이더 설정이 필요하다.
+
+ViewEncapsulation.None을 설정해서 application.component.css에서 정의한 스타일을 ApplicationComponent에만 적용하지 않고 전체 애플리케이션에 적용한다.
+
+// application.component.html
+            <div class="row">
+                <div *ngFor="let prod of products" class="col-sm-4 col-lg-4 col-md-4">
+                    <auction-product-item [product]="prod"></auction-product-item>
+                </div>
+            </div>
+
+상품의 목록을 표현할 때, 같은 HTML을 여러번 렌더링 해야하는데, NgFor 디렉티브 컴포넌트의 template 안에서 데이터 갯수만큼 HTML 마크업을 렌더링한다.
+
+*ngFor 디렉티브가 <div>에 사용되어서 데이터 갯수마다 auction-product-item>로 표현되는 컴포넌트에서 프로퍼티 이름을 product로 사용할 것이며 prod는 *ngFor에 의해서 사용되는 지역변수로 let prod의 의미와 동일하다.
+
+//product-item.component.ts
+export default class ProductItemComponent {
+    @Input product : Product;
+}
+
+@Input어노테이션이 사용되었는데 이 어노테이션은 부모 컴포넌트에서 접근할 수 있도록 컴포넌트 외부로 공개되어 있고, 부모 컴포넌트에서 값을 지정할 수 있다는 것을 의미한다.
+
+{{}} 이중 중괄호 : 실행 결과가 문자열로 변환되어 템플릿의 표현식에 치환된다.
