@@ -7,5 +7,5 @@ import {Product} from '../../services/product.service';
     templateUrl : 'app/components/product-item/product-item.component.html'
 })
 export default class ProductItemComponent {
-    @Input product : Product;
+    @Input() product : Product;
 }

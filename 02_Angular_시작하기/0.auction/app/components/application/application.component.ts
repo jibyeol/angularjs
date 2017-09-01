@@ -11,6 +11,6 @@ export default class ApplicationComponent {
     products : Array<Product> = [];
 
     constructor(private productService : ProductService) {
-        this.products = productService.getProducts();
+        this.products = this.productService.getProducts();
     }
 }
