@@ -1,0 +1,32 @@
+ - 사용자가 인증을 한 후에만 라우팅을 수행하고, 인증하지 않았다면 인증을 하게한다.
+ - 이 폼에 유효한 데이터를 입력한 경우에만 내비게이션을 허용한다.
+ - 라우터에서 빠져나갈 때 저장하지 않은 정보가 있다는 것을 사용자에게 알린다.
+
+const routes : Routes = [
+    {path : '', component : HomeComponent},
+    {path : 'product', component : ProductDetailComponent, canActivate : [LoginGuard]}
+]
+canActivate 프로퍼티에 배열을 사용하면, 배열로 전달된 모든 가드를 순서대로 실행할 수 있다. 지정된 가드 중에 false를 반환한 가드가 있으면, 즉시 내비게이션을 막는다.
+이 가드는 @NgModule의 프로바이더 목록에 추가해야한다.
+
+canActivate(destination: ActivatedRouteSnapshot, state: RouterStateSnapshot)
+-- 두 인자는 Angular에 의해 자동으로 주입되며, 현재 라우터의 상태를 참고할 때 간편하게 사용할 수 있다.
+
+canActivate(destination: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+	console.log(destination.component.name);
+}
+-- 이렇게 라우터를 통해 이동하려는 컴포넌트의 이름을 알 수 있다.
+
+
+import {CanDeactivate} from '@angular/router';
+import {Injectable} from '@angular/core';
+
+@Injectable()
+export class UnsavedChangesGuard implements CanDeactivate {
+    canDeactivate(){
+        return window.confirm('You have unsaved changes. Still want to leave?');
+    }
+}
+
+CanDeactivate 인터페이스 구현하는 과정은 위와 같고, 라우터를 벗어날 때, 저장되지 않은 내용은 폐기할 것인가 묻는 가드이다.
+라우터 설정과 모듈의 프로바이더 목록에 canDeactivate를 추가하는 것을 잊지 말자!

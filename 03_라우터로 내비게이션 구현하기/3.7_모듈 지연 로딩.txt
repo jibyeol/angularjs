@@ -1,0 +1,18 @@
+애플리케이션에서 자주 사용하지 않는 모듈이 있다면 이 모듈을 필요할 때 따로 내려받아 불러올 수 있는데, 이를 지연로딩(lazy loading)이라고 한다.
+
+@NgModule({
+    imports : [BrowserModule, RouterModule.forRoot([
+        {path : '', component : HomeComponent},
+        {path : 'product', component : ProductDetailComponent},
+        {path : 'luxury', loadChildren : 'app/components/luxury/luxury.lazy.module'}
+    ])],
+    declarations : [AppComponent, HomeComponent, ProductDetailComponent],
+    providers : [{provide : LocationStrategy, useClass : HashLocationStrategy}],
+    bootstrap : [AppComponent]
+})
+class AppModule{}
+
+
+이렇게 직접 imports에 추가하지 않고, RouterModule.forRoot에 
+위처럼 추가한다.
+loadChildren은 부러올 모듈의 위치를 지정하는 표현이다.

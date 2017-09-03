@@ -1,0 +1,58 @@
+SPA : 첫 페이지 상태, 상품 정보 상태, 배송 조회 상태와 같이 특정 뷰가 표시되고 있느 상태를 모아둔 것! 
+	-- 한 페이지에 머물러 있으면서 상태에 맞는 뷰를 표시하는 방식
+	-- 네비게이션, 검색, 푸터는 그대로 두고 가운데만 변경함
+	-- 각 뷰는 주소표시줄에서 구별할 수 있게 유일한 URL을 갖고 있다.
+
+
+
+3.1.1 위치 정책 (Location strategy)
+SPA는 서버에 요청을 보내지 않고도 URL을 변경할 수 있다.
+
+Angualar에서 주소를 관리하는 정책
+ - HashLocationStrategy(해시 기반 내비게이션 정책) : #(해시기호)를 사용해서 # 이후의 부분은 웹 페이지의 특정부분을 가리키도록 라우팅하는 정책
+ - PathLocationStrategy(방문 기록 API 기반 내비게이션 정책) : 방문기록 API를 사용하며 HTML5를 지원하는 브라우저에서만 동작한다. Angular 라우터의 기본 정책이다.
+
+[해시 기방 내비게이션]
+-----서버위치---------- ------클라이언트 위치-- 
+http://mysite.com:8080/#/product/page/3
+----  ----------- ----   ------------ -
+프로   도메인     포트   라우팅 경로  라우팅
+토콜    이름                            인자
+
+클라이언트 위치 문자를 바꿔도 서버로 요청이 가지 않으며 그 경로에 해당하는 뷰를 표시한다.
+
+[방문 기록 API 기반의 내비게이션]
+코드에 의해 방문 기록 시택을 조작해서 이전 위치로 이동하거나 새로운 위치로 이동할 수 있다.
+
+
+3.1.2 라우터 구성 요소
+
+@angular/router가 필요!
+ - Router : 라우터 구현 객체. navigate(), navigateByUrl() 함수 또는 path 프로퍼티 값을 변경하여 경로를 이동. 브라우저의 URL을 직접 수정해도 이동 가능하다.
+ - RouterOutlet : 컴포넌트 렌더링하는 영역인 <router-outlet>을 구현하는 디렉티브
+ - Routes : 특정 URL에 연결되는 컴포넌트 지정하는 배열
+ - RouterLInk : HTML 앵커 태그는 주소의 URL을 변경하지만, RouterLink 디렉티브는 앵커태그가 Angular 라우터를 통하도록 기능을 변경할 수 있다.
+ - ActivatedRoute : 현재 동작하는 라우터 인스턴스를 가리키는 객체
+
+const routes : Routes = [
+	{path : '', component : HomeComponent},
+	{path : 'product', component : ProductDetailComponent}
+];
+
+@NgModule({
+	imports : [BrowserModule, RouterModule.forRoot(routes)],
+	...
+})
+
+모듈이 아닌 기능을 모듈에 라우터로 추가하려면 forRoot대신 forChild를 사용한다.
+이때 루트모듈이 아니므로 BrowserModule 대신 CommonModule을 사용하는 것에 주의!
+
+
+3.1.3 navigate() 함수 사용하기
+앵커태그에 routerLink를 추가해서 Angular 내비게이션을 연결했다. 
+사용자의 클릭없이 코드로 전환할때는 navigate()를 사용한다.
+유효한 라우터인지 확인하려면 라우터 객체의 isRouteActive() 함수를 사용한다.
+
+404 에러 처리하기
+{path : '**', component : _404Component }
+이렇게 하면 됨!

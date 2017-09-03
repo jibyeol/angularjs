@@ -1,0 +1,19 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
+import {LuxuryComponent} from './luxury.component';
+
+@NgModule({
+    imports : [CommonModule, RouterModule.forChild([
+        {path : 'luxury', component : LuxuryComponent}
+    ])],
+    declarations : [LuxuryComponent]
+})
+export class LuxuryModule{}
+
+기능 모듈!!
+BrowserModule --> CommonModule
+forRoot() --> forChild()
+
+모듈화를 하면, 모듈 삭제, 앵커태그만 삭제하면 된다.
+기능단위로 모듈화하는 것이 리팩토링하기가 더 쉽다.
