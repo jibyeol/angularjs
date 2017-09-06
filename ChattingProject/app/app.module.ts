@@ -7,6 +7,7 @@ import {ChattingComponent} from './components/chatting/chatting.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {RoomListComponent} from './components/room-list/room-list.component'
+import {RoomService} from './services/room.service';
 
 const routes : Routes = [
     {path : '', component : RoomListComponent},
@@ -21,7 +22,8 @@ const routes : Routes = [
         NavbarComponent,
         RoomListComponent
     ],
-    providers : [{provide : LocationStrategy, useClass : HashLocationStrategy}],
+    providers : [RoomService, 
+        {provide : LocationStrategy, useClass : HashLocationStrategy}],
     bootstrap : [ApplicationComponent]
 })
 export class AppModule{}
