@@ -7,11 +7,13 @@ import {ChattingComponent} from './components/chatting/chatting.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {RoomListComponent} from './components/room-list/room-list.component'
+import {MyPageComponent} from './components/my-page/my-page.component';
 import {RoomService} from './services/room.service';
 
 const routes : Routes = [
     {path : '', component : RoomListComponent},
-    {path : 'chatting', component : ChattingComponent}
+    {path : 'chatting/:roomId', component : ChattingComponent},
+    {path : 'myPage', component : MyPageComponent}
 ]
 
 @NgModule({
@@ -20,7 +22,8 @@ const routes : Routes = [
         ChattingComponent,
         FooterComponent,
         NavbarComponent,
-        RoomListComponent
+        RoomListComponent,
+        MyPageComponent
     ],
     providers : [RoomService, 
         {provide : LocationStrategy, useClass : HashLocationStrategy}],
