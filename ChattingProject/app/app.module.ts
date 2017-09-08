@@ -9,11 +9,13 @@ import {NavbarComponent} from './components/navbar/navbar.component';
 import {RoomListComponent} from './components/room-list/room-list.component'
 import {MyPageComponent} from './components/my-page/my-page.component';
 import {RoomService} from './services/room.service';
+import {_Error404Component} from './components/error/error-404.component';
 
 const routes : Routes = [
     {path : '', component : RoomListComponent},
     {path : 'chatting/:roomId', component : ChattingComponent},
-    {path : 'myPage', component : MyPageComponent}
+    {path : 'myPage', component : MyPageComponent},
+    {path : '**', component : _Error404Component}
 ]
 
 @NgModule({
@@ -23,7 +25,8 @@ const routes : Routes = [
         FooterComponent,
         NavbarComponent,
         RoomListComponent,
-        MyPageComponent
+        MyPageComponent,
+        _Error404Component
     ],
     providers : [RoomService, 
         {provide : LocationStrategy, useClass : HashLocationStrategy}],
