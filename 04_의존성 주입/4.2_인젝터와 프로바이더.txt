@@ -1,0 +1,56 @@
+Angular -> 인젝터와 프로바이더로 의존성 주입 패턴을 구현
+전체 모듈에서 사용하는 루트 인젝터(root injector)가 있다.
+컴포넌트 안에도 인젝터를 따로 만든다.
+프로바이더는 @Component 어노테이션이나 @NgModule 어노테이션에 등록할 수 있다.
+
+@NgModule({
+	...
+	providers : [{provide : ProductService, useClass : ProductService}]
+	// providers : [ProductService] 
+	// 토큰이름과 클래스이름이 같으면 이렇게 줄여서 사용할 수 있다.
+})
+이 프로바이더는AppModule이 부트스트랩될 때부터 모듈 전체에 반영된다.
+
+@Component({
+	...
+	providers : [ProductService]
+})
+이 프로바이더는 코드가 로드되는 시점에는 ProductService의 인스턴스가 아직 만들어지지 않는다.
+인젝터에게 언젠가 ProductService라는 타입의 객체를 인자로 받는 생성자를 만나 이 객체의 인스턴스를 생성할 필요가 있을 때, 여기에 등록된 클래스를 사용하라는 것을 알려주는 역할을 한다.
+
+토큰이름과 클래스 이름이랑 다르면,
+providers : [{provide : ProductService, useClass : MockProductService}]
+이렇게 쓰면 된다. 
+
+생성자에 인자를 선언하면서 인자의 타입을 지정하면 인젝터가 그 타입의 인스턴스를 생성해서 주입한다.
+constructor(productService : ProductService)
+
+
+
+TypeScript와 ES6의 의존성 주입 비교
+TypeScript
+
+constructor(productService : ProductService) // 간단!
+
+@Component 어노테이션이 있어서 위 코드만 있어도 주입이된다.
+SystemJS사용하고, TypeScript를 실시간으로 변환하는 환정에서는 system.config.js에
+
+typescriptOptions : {
+	"emitDecoratorMetadata" : true
+}
+를 추가해야한다.
+
+
+ES6
+
+주입할때 @Inject어노테이션을 사용해서 명시적으로 타입을 지정해야한다.
+constructor(@Inject(ProductService) productService)
+
+
+
+4.2.1 프로바이더 등록하기
+
+프로바이더에 지정하는 값은 클래스나 팩토리함수, 문자열, OpaqueToken 클래스가 될 수 있다.
+ - 인젝터가 클래스를 직접 사용하도록 매핑할때는 useClass 프로퍼티
+ - 조건을 판단하기 위해 팩토리 함수를 사용할 때는 useFactory 프로퍼티를 사용해서 팩토리 함수를 지정. 팩토리 함수는 인자를 받을 수 있다.
+ - URL을 지정할 때와 같이 문자열을 간단하게 매핑할 때는 useValue 프로퍼티 사용!
