@@ -19,9 +19,8 @@ System.config({
 		'@angular/compiler' : { main : 'bundles/compiler.umd.min.js' },
 		'@angular/platform-browser' : { main : 'bundles/platform-browser.umd.min.js' },
 		'@angular/platform-browser-dynamic' : { main : 'bundles/platform-browser-dynamic.umd.min.js' },
-		'@angular/router' : { main : 'bundles/router.umd.min.js' },
-		'@angular/http' : { main : 'bundles/http.umd.min.js' },
+		'@angular/router' : {main : 'bundles/router.umd.min.js'},
 
-		'app' : { main : 'main-opaque-token', defaultExtension : 'ts' }
+		'app' : { main : 'main', defaultExtension : 'ts' }
 	}
 });

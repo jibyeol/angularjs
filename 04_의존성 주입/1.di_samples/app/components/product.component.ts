@@ -12,6 +12,8 @@ import {ProductService, Product} from '../services/product.service';
         </div>
     `,
     providers : [ProductService]
+    // provide와 useClass의 이름이 같아서 간단한 표기법을 사용.
+    // 만약 ProductService대신 OtherProductService로 바꾼다면 여기만 수정하면 된다.
 })
 export class ProductComponent {
     product : Product;
