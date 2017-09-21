@@ -28,6 +28,7 @@ class AppComponent{
     }
 
     onInputEvent2({target}) : void { // 비구조화로 코드 간단하게 만들기
+        // Event의 target 프로퍼티를 참조한다~
         console.log(`The input property value = ${target.value}`);
         console.log(`The input attribute value = ${target.getAttribute('value')}`);
         console.log(`The greeting property value = ${this.greeting}`);
