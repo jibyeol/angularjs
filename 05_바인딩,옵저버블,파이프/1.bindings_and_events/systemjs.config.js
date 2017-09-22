@@ -21,7 +21,8 @@ System.config({
 		'@angular/platform-browser-dynamic' : { main : 'bundles/platform-browser-dynamic.umd.min.js' },
 		'@angular/router' : { main : 'bundles/router.umd.min.js' },
 		'@angular/http' : { main : 'bundles/http.umd.min.js' },
+		'@angular/forms' : { main : 'bundles/forms.umd.min.js' },
 
-		'app' : { main : 'bindings/attribute-vs-property', defaultExtension : 'ts' }
+		'app' : { main : 'bindings/two-way-binding', defaultExtension : 'ts' }
 	}
 });
