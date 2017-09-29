@@ -23,6 +23,6 @@ System.config({
 		'@angular/http' : { main : 'bundles/http.umd.min.js' },
 		'@angular/forms' : { main : 'bundles/forms.umd.min.js' },
 
-		'app' : { main : 'bindings/two-way-binding', defaultExtension : 'ts' }
+		'app' : { main : 'observable/observable-events', defaultExtension : 'ts' }
 	}
 });
