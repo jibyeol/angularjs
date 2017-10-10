@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule} from '@angular/router';
+import {ReactiveFormsModule} from '@angular/forms'; // <input> 엘리먼트를 동작시키기위해 로드시킨다.
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import ApplicationComponent from './components/application/application.component';
 import CarouselComponent from './components/carousel/carousel.component';
@@ -12,9 +13,10 @@ import StarsComponent from './components/stars/stars.component';
 import {ProductService} from './services/product.service';
 import HomeComponent from './components/home/home.component';
 import ProductDetailComponent from './components/product-detail/product-detail.component';
+import {FilterPipe} from './components/pipes/filter.pipe';
 
 @NgModule({
-    imports : [BrowserModule, RouterModule.forRoot([
+    imports : [BrowserModule, ReactiveFormsModule, RouterModule.forRoot([
         {path : '', component : HomeComponent},
         {path : 'products/:productId', component : ProductDetailComponent}
     ])],
@@ -26,7 +28,8 @@ import ProductDetailComponent from './components/product-detail/product-detail.c
         ProductDetailComponent,
         ProductItemComponent,
         SearchComponent,
-        StarsComponent],
+        StarsComponent,
+        FilterPipe], // FilterPipe를 모듈에 등록한다.
     providers : [ProductService,
     {provide : LocationStrategy, useClass : HashLocationStrategy}],
     bootstrap : [ApplicationComponent]
