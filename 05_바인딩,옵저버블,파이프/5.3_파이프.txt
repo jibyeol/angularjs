@@ -1,0 +1,28 @@
+5.3 파이프
+
+어떤 값의 형태를 바꿀 때 사용하는 템플릿 엘리먼트
+--------------------------------
+template : `<p>Your birthday is {{birthday | date}}</p>`
+--------------------------------
+
+파이프는 각각 DatePipe와 같이 클래스로 구현되어있다.
+ - UpperCasePipe : 문자열을 모두 대문자로 변환 : uppercase
+ - DatePipe : 날짜를 여러가지 형식으로 표시 : date
+ - CurrencyPipe : 숫자를 원하는 형식의 화폐 단위로 변환 : currency
+ - JsonPipe : 문자열을 JSON 형식으로 변환 : json
+ - AsyncPipe : 옵저버블 스트림을 엘리먼트로 풀어서 표시 : async
+
+--------------------------------
+template : `<p>Your birthday is {{birthday | date : 'medium' | uppercase}}</p>`
+--------------------------------
+'medium' 인자 전달하여 날짜 형식으로 바꾸고, 다시 대문자로 변환
+
+
+5.3.1 커스텀 파이프
+
+@Pipe 어노테이션과 PipeTransform 인터페이스를 구현하면 된다
+--------------------------------
+export interface PipeTransfrom {
+	transform(value : any, ...args : any[]) : any;
+}
+--------------------------------
