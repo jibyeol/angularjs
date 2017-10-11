@@ -43,3 +43,12 @@ class AppComponent{
 class AppModule{}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
+
+/**
+ * AppComponent안에 OrderComponent가 있다.
+ * stockSymbol과 quantity는 @Input어노테이션으로 지정되어있고,
+ * 사용자가 입력한 내용은 부모 컴포넌트에 할당되었다가 자식컴포넌트의 프로퍼티로 전달된다.
+ * quantity도 전달되지만, 
+ * 이 값은 변경되지 않는다고 가졍하여 부모 컴포넌트의 프로퍼티와 바인딩하지 않은 채로 
+ * 고정된 값을 사용했다.
+ */
