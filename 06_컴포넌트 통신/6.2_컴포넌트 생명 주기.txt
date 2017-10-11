@@ -8,5 +8,32 @@ DOM에 추가
 컴포넌트 상태나 내부의 프로퍼티 값이 변경되면 UI를 다시 렌더링
 컴포넌트 종료
 
+컴포넌트 생성
+ - constructor()
+ - ngOnChanges() or DoCheck()
+ - ngOnInit()
+ - ngAfterContentInit()
+ - ngAfterContentChecked() <--> 변화감지의 ngAfterContentChecked() / ngAfterViewChecked()
+ - ngAfterViewInit()
+ - ngAfterViewChecked()
+컴포넌트 종료
+ - ngOnDestroy()
+변화감지
+ - ngOnChanges() or DoCheck()
+ - ngAfterContentChecked()
+ - ngAfterViewChecked()
+
 컴포넌트의 생명주기를 가로채서 원하는 동작을 하려면?
- - ngOnChanges() : 부모 -> 자식
+ - ngOnChanges() : 부모 -> 자식 입력 프로퍼티로 바인딩된 값이 변경, 초기화될 때 실행.
+		   입력 프로퍼티가 없으면 실행되지 X
+		   변화 감지 알고리즘 만드록 싶을 경우 이 알고리즘 DoCheck() 함수로 구현할 수 있지만, 모든 변화 감지 사이클마다 DoCheck() 함수를 실행하기 때문에 성능에 나쁜 영향을 줄 수 있다.
+ - ngOnInit() : 프로퍼티 값을 초기화하려고 ngOnChanges()가 실행된 뒤에 실행
+		생성자에서 변수를 초기화해도 프로퍼티들이 생성되지 않지만, ngOnInit()이 실행되는 시점은 컴포넌트 프로퍼티들이 생성되어 초기화되고 난 이후다.
+ - ngAfterContentInit() : ngContent 디렉티브를 사용해서 자식 컴포넌트에 HTML 조각을 전달하면, 자식 컴포넌트가 초기화 된 이후에 실행된다.
+ - ngAfterContentChecked() : ngContent 디렉티브를 통해 부모로부터 HTML 조각을 받은 직후에 자식에서 실행된다. ngContent에 바인딩된 항목이 있으면, 이 항목의 값이 변경된 경우에도 실행된다.
+ - ngAfterViewInit() : 컴포넌트 템플릿의 바인딩이 완료된 후에 실행된다. 부모 초기화되고, 자식이 초기화되서 자식 컴포넌트들이 모두 준비된 후에 실행된다.
+ - ngAfterViewChecked() : 컴포넌트 템플릿에 바인딩된 항목의 값이 변경되면 실행된다. 컴포넌트 내부나 외부에서 발생한 변경 사항을 반영하기 위해 여러 번 호출될 수 있다.
+
+이름에 Content가 들어간것은 <ng-content> 디렉티브를 사용하는 경우에만 실행된다.
+View가 들어간 것은 컴포넌트 템플릿과 관련된 것이다.
+Checked는 컴포넌트와 DOM이 동기화된 직후를 뜻한다.
