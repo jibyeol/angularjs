@@ -1,0 +1,28 @@
+    <form [formGroup]="formModel"> 
+    <!-- formModel 이라는 이름으로 폼 그룹 적용. 
+        formModel은 SearchComponent에서 클래스 변수로 선언. -->
+        <div class="form-group">
+            <label for="title">Product title :</label>
+            <input type="text" id="title"
+                   placeholder="Title" class="form-control"
+                   formControlName="title">
+                   <!-- input 엘리먼트는 title이라는 이름으로 폼 컨트롤을 적용. 
+                    폼컨트롤 title은 SearchComponent의 formModel 폼 그룸 안에 있는 하위 항목이다. -->
+        </div>
+        <div class="form-group">
+            <label for="price">Product price :</label>
+            <input id="price"
+                   type="number" min="0" step="any"
+                   placeholder="Price" class="form-control"
+                   formControlName="price">
+        </div>
+        <div class="form-group">
+            <label for="category">Product category :</label>
+            <select id="category" class="form-control"
+                formControlName="category">
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Search</button>
+        </div>
+    </form>
