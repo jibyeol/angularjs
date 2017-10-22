@@ -1,0 +1,47 @@
+7.1.1 HTML 표준 폼
+------------------------
+<form action="/register" method="POST">
+	<div>Username : <input type="text"></div>
+	<div>SSN : <input type="text"></div>
+	<div>Password : <input type="password"></div>
+	<div>Confirm Password : <input type="password"></div>
+	<button type="submit">Submit</button>
+</form>
+------------------------
+제출 버튼을 클릭하면 폼 데이터가 서버로 전송되는데, 요청을 보낸 후 페이지가 새로 그려진다.
+
+ - 각 필드에 유효성 검증 로직 필요
+ - 에러 메세지는 필드 근처에
+ - 연관된 항목은 유효성 같이 검사 (PW, PW 확인)
+ - 데이터 보낼때 과정을 조작 (유효성 확인. 폼 데이터를 변환해서 서버로 보냄)
+ - HTTP / AJAX / WebSocket - 뭐로 보낼지 결정
+
+[ HTML 유효성 검증 애트리뷰트 ]
+------------------------
+<input id="username" type="text" required pattern="[a-zA-z0-9]+">
+------------------------
+정규 표현식 사용 -> 규칙이 틀리면, 형식을 일치시키라고 나옴
+ - 메세지 의미가 모호
+ - 다른 곳으로 포커스를 옮기면 메세지 사라짐
+ - 팝업의 스타일이 별로
+
+[ 입력 필드 타입 지정하기 ]
+text, number, url, email -- 지정된 이외의 타입이 입력되는 것을 막을 수 있음
+------------------------
+<input id="zipcode" type="number" min="10000" max="99999">
+------------------------
+ - 사용자가 입력한 주소에 맞는 우편번호만 유효하다고 판단할 수 없다.
+
+
+7.1.2 Angular 폼
+템플릿 기반 폼 : 디레기브 사용 -- 템플릿에 폼 모델 정의 (한계가 있어서 단순할 때만 사용)
+반응형 폼 : 클래스 코드에서 폼 컨트롤 사용
+ - 모두 데이터 구조(model)이 있다.
+    템플릿 기반 : 디렉티브를 사용해서 모델을 정의
+    반응형 : TypeScript 코드로 모델 정의하고 각 항목 연결
+ - 반응형의 모델은 @angular/forms 모듈의 FormControl, FormGroup, FormArray를 사용하는 클래스 객체여야 한다.
+ - 반응형으로 구성해도 화면의 HTML은 여전히 필요. 연결될 HTML엘리먼트는 템플릿에서 정의
+
+템플릿 기반 폼 : NgModule의 imports에 FormsModule을 추가
+반응형 폼 : ReactiveFormsModule을 추가
+두개 동시에 사용할 수 있다.

@@ -1,0 +1,6 @@
+7.2.1 템플릿 기반 폼에 사용하는 디렉티브
+FormsModule에서 제공하는 NgModel, NgModelGroup, NgForm
+
+[ NgForm ]
+폼 전체 가리키는 디렉티브
+폼 모듈을 로드하면 모든 <form>에 디렉티브가 자동으로 적용된다.
