@@ -4,3 +4,68 @@ FormsModule에서 제공하는 NgModel, NgModelGroup, NgForm
 [ NgForm ]
 폼 전체 가리키는 디렉티브
 폼 모듈을 로드하면 모든 <form>에 디렉티브가 자동으로 적용된다.
+폼 모듈 로드해서 기존의 <form>이 동작하지 않을 수 있다. -- form 사용하지만, Angular로 제어하고 싶지 않다면 ngNoForm 어트리뷰트를 추가하면 된다.
+----------------------------
+<div ngForm></div> // 어트리뷰트로 적용
+<ngForm></ngForm> // 엘리먼트로 적용
+----------------------------
+
+----------------------------
+<form #f="ngForm" (ngSubmit)="onSubmit(f.value)"></form>
+<pre>{{f.value | json}}</pre>
+----------------------------
+f 변수가 ngForm이라는 이름을 사용하도록 exportAs 프로퍼티(위 코드에서는 #을 사용)를 지정
+f 를 통해서 프로퍼티에 접근 가능!
+submit 이벤트를 가로채서 서버로 데이터 보내는 동작을 막는다.
+ngSubmit 이벤트를 사용해야 함
+
+
+[ NgModel ]
+폼에 있는 필드 하나를 가리킨다.
+----------------------------
+<form>
+	<input type="text" name="username" ngModel>
+</form>
+----------------------------
+name 어트리뷰트를 지정해야한다.
+ngModel은 양방향 바인딩이 아니라, NgForm 디렉티브를 위한 것이다.
+
+----------------------------
+<form>
+	<input type="text" name="username" ngModel #c="ngModel">
+	<pre>{{c.value}}</pre>
+</form>
+----------------------------
+여기서 ngModel은 NgModel의 exportAs 프로퍼티는 ngModel을 가리킨다.
+
+
+[ ngModelGruop ]
+----------------------------
+<form #f="ngForm">
+	<div ngModelGroup="fullName">
+		<input type="text" name="firstName" ngModel>
+		<input type="text" name="lastName" ngModel>
+	</div>
+</form>
+<pre>First name : {{f.value.fullName.firstName}}</pre>
+<pre>Last name : {{f.value.fullName.lastName}}</pre>
+----------------------------
+
+
+
+7.2.2 HTML 폼에 적용하기
+------------------------
+<form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+	<div>Username : <input type="text" name="username" ngModel></div>
+	<div>SSN : <input type="text" name="ssn" ngModel></div>
+	<div ngModelGrup="passwordsGroup">
+		<div>Password : <input type="password" name="password" ngModel></div>
+		<div>Confirm Password : <input type="password" name="pconfirm" ngModel></div>
+	</div>
+	<button type="submit">Submit</button>
+</form>
+------------------------
+f 변수로 value나 valid와 같은 폼 프로퍼티에 접근할 수 있다.
+데이터가 서버로 전송되고 페이지가 갱신되는 동작 없이 개발자가 원하는 로직을 실행할 수 있다.
+username과 ssn은 ngModel 어트리뷰트를 추가하고, name도 같이 추가했다.
+pw는 확인하는 것과 연관되어있으므로 그룹으로 지정하자
