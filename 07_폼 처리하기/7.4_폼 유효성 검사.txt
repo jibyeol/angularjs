@@ -1,0 +1,6 @@
+7.4.1 반응형 폼 유효성 검사
+-----------------------------
+interface ValidatorFn {
+	(c : AbstractControl) : {[key:string] : any};
+}
+-----------------------------

@@ -1,0 +1,198 @@
+7.3.1 폼 모델
+FormControl, FormGroup, FormArray
+
+[ FormControl ]
+폼 구성 기본 단위
+보통 <input>에 해당. 달력, 슬라이더같은 UI도 가능
+HTML 엘리먼트 값을 저장할 수 있고 변경 확인, 유효석 검증도 확인할 때도 사용
+
+-------------------------
+let username = new FormControl('initial value');
+-------------------------
+인스턴스를 생성하면서 초기값 전달
+
+
+[ FormGroup ]
+폼 구성요소
+FormControl을 그룹으로 묶을 때 사용
+폼 전체를 가리키는 용도로도 씀
+
+-------------------------
+let formModel = new FormGroup({
+	from : new FormControl(),
+	to : new FormControl()
+})
+-------------------------
+
+
+[ FormArray ]
+FormGroup과 비슷.
+길이 정보 제공
+배열과 비슷
+필드 갯수가 변할 때 사용하는 것이 적합
+
+-------------------------
+let formModel = new FormGroup({		// FormGroup은 전체 폼을 가리킴
+	emails : new FormArray([	// 여러 이메일
+		new FormControl(),	// 키를 사용해서 접근하지 않고 인덱스를 사용
+		new FormControl()
+	])
+})
+-------------------------
+
+
+
+7.3.2 폼 디렉티브
+디렉티브는 ReactiveFormsModule에 선언
+폼 디렉티브는 form* 접두사가 붙음 (템플릿 = ng*)
+
+모델 클래스	폼 디렉티브
+FormGroup	formGroup	formGroupName
+FormControl	formControl	formControlName
+FormArray	-		formArrayName
+
+FormArray는 프로퍼티 바인딩으로 사용할 수 없다.
+
+
+[ formGroup ]
+<form>에 FormGroup 클래스 바인딩해서 폼 전체를 가리키는 용도로 사용
+-------------------------
+@Component(...)
+class FormComponent {
+	formModel : FormGroup = new FormGroup({});
+}
+-------------------------
+formGroup 디렉티브를 사용하려면 컴포넌트에 FormGroup 객체를 만들어야한다.
+
+-------------------------
+<form [formGroup]="formModel"></form>
+-------------------------
+그리고 formGroup 어트리뷰트를 추가한다.
+
+
+[ formGroupName ]
+폼 안에서 그룹을 묶을 때 사용한다.
+FormGroup 클래스 사용
+안에 또다른 FormGroup을 선언할 수 있음
+
+-------------------------
+@Component(...)
+class FormComponent {
+	formModel : FormGroup = new FormGroup ({
+		dateRange : new FormGroup({
+			from : new FormControl(),
+			to : new FormControl()
+		})
+	})
+}
+-------------------------
+<form>에 formGroup 디렉테브를 지정해서 프로퍼티 바인딩할 것
+dateRange라는 이름으로 자식 FormGroup을 만듦
+
+-------------------------
+<form [formGroup]="formModel">
+	<div formGroupName="dateRange">...</div>
+</form>
+-------------------------
+
+접미사가 *Name인 디렉티브의 값은 문자열이라서 대괄호를 생략하고 짧게 바인딩했다
+문법 그대로 사용하면 아래처럼 하면 된다.
+-------------------------
+<div [formGroupName]="'dateRange'">...</div>
+-------------------------
+
+
+[ formControlName ]
+formGroup안에서 사용해야한다.
+formGroup 디렉티브의 자식 FormControl 하나를 DOM 엘리먼트 하나와 연결해야한다.
+-------------------------
+<form [formGroup]="formModel">
+	<div formGroupName="dateRange">
+		<input type="date" formControlName="from">
+		<input type="date" formControlName="to">
+	</div>
+</form>
+-------------------------
+
+
+[ formControl ]
+FormGroup으로 모델을 정의하지 않은 상황에서 유효성을 검증하거나 폼 API를 사용할 떄도 FormControl 클래스를 사용할 수 있다.
+
+-------------------------
+@Component({...})
+class FormComponent {
+	weatherControl : FormControl = new FormControl();
+
+	constructor() {
+		this.weatherControl.valueChanges
+			.debounceTime(500)
+			.switchMap(city => this.getWeather(city))
+			.subscribe(weather => console.log(weather));
+	}
+}
+-------------------------
+
+-------------------------
+<input type="text" [formControl]="weatherControl">
+-------------------------
+formGroup없이 FormControl을 만들어서 formControlName은 사용할 수 없다.
+
+
+[ formArrayName ]
+FormGroup 객체의 자식인 FormArray인스턴스를 DOM 엘리먼트에 연결한다.
+이름을 지정할 수 없어서 인덱스를 사용한다.
+보통 ngFor과 사용된다.
+
+-------------------------
+@Component({
+    selector : 'app',
+    template : `
+        <form [formGroup]="formModel" (ngSubmit)="onSubmit()">
+            <button type="button" (click)="addEmail()">Add Email</button>
+            <ul formArrayName="emails">
+                <li *ngFor="let e of formModel.get('emails').controls; let i=index">
+                    <input [formControlName]="i">
+                </li>
+            </ul>
+            <button type="submit">Submit</button>
+        </form>
+        <hr>
+        <label>Form Value : </label>
+        <pre>{{value}}</pre>
+    `
+})
+export class AppComponent{
+    formModel : FormGroup = new FormGroup({
+        emails : new FormArray([
+            new FormControl()
+        ])
+    })
+    
+    get value () {
+        return JSON.stringify(this.formModel.value, null, 4);
+    }
+
+    addEmail() {
+        this.formModel.get('emails').push(new FormControl());
+    }
+
+    onSubmit () {
+		console.log(this.formModel.value);
+	}
+}
+-------------------------
+
+
+7.3.4 FormBuilder 사용하기
+-------------------------
+    constructor(fb : FormBuilder) {
+        this.formModel = fb.group({
+            'username' : ['user'], // 초기값, 유효성 검사 함수, 비동기 유효성 검사 함수
+            'ssn' : [''],
+            'passwordsGroup' : fb.group({
+                'password' : [''],
+                'pconfirm' : ['']
+            })
+        });
+    }
+-------------------------
