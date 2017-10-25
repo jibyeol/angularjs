@@ -23,7 +23,7 @@ System.config({
 		'@angular/http' : { main : 'bundles/http.umd.min.js' },
 		'@angular/forms' : { main : 'bundles/forms.umd.min.js' },
 
-		'app' : { main : '04_form-builder', defaultExtension : 'ts' }
+		'app' : { main : '05_custom-validator', defaultExtension : 'ts' }
 	},
 	
 	meta : {

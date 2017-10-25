@@ -4,3 +4,74 @@ interface ValidatorFn {
 	(c : AbstractControl) : {[key:string] : any};
 }
 -----------------------------
+
+Angular에서는 required, minLength, maxLength, pattern 처럼 미리 정의되어있는 유효성 검사기도 제공된다.
+-----------------------------
+import {FormControl, Validators} from '@angular/forms';
+let usernameControl = new FormControl('', Validators.required);
+-----------------------------
+첫번째 인자는 초기값이고, 두번쨰 인자는 유효성 검사기이다.
+
+-----------------------------
+let usernameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
+-----------------------------
+배열로 여러개 전달할 수도 있다.
+
+-----------------------------
+let isValid : boolean = usernameControl.valid;
+-----------------------------
+유효성 맞나 확인할 수 있다.
+
+-----------------------------
+let errors : {[key: string] : any } = usernameControl.errors;
+-----------------------------
+에러 객체를 확인할 수 있다.
+
+[커스텀 유효성 검사기]
+
+function ssnValidator (control : FormControl) : {[key: string]: any} { // 필드를 하나씩 검사하기 위해 FormControl 타입을 받는다.
+    const value : string = control.value || ''; // null을 검사하지 않도록 객체의 값을 보정한다.
+    const valid = value.match(/^\d{9}$/); // 정규표현식으로 문자열을 검사한다.
+    return valid ? null : {ssn:true}; // 형식에 맞지 않으면 에러 객체를 반환한다. 성공시 null을 반환하고 에러가 없다는 뜻이다.
+}
+
+// 사용 -- 
+// let ssnControl = new FormControl('', ssnValidator);
+
+
+[그룹 유효성 검사기]
+비밀번호와 비밀번호 확인이 일치하는지 확인하는 유효성 검사기
+
+function equalValidator ({value} : FormGroup) : {[key : string] : any} {
+    const [first, ...rest] = Object.keys(value || {}); // 폼 데이터의 모든 프로퍼티를 개별 변수로 할당
+    const valid = rest.every(v => value[v] === value[first]); // 프로퍼티를 순회하며 값이 같은지 검사
+    return valid ? null : {equal : true};
+}
+
+
+[비동기 유효성 검사기]
+HTTP 요청을 통해 서버를 거쳐야하는 경우 사용되고
+다른 유효성검사기와 같지만 Observable이나 Promise객체를 반환한다는 것이 다르다.
+
+function asyncSsnValidator(control : FormControl) : Observable<any> {
+	const value : string = control.value || '';
+	const valid = value.match(/^\d{9}$/);
+	return Observable.of(valid ? null : {ssn:true}).delay(1000);
+}
+// let ssnControl = new FormControl('', null, asyncSsnValidator);
+비동기 유효성 검사기는 세번쨰 인자로 전달한다.
+
+[필드의 상태와 유효성 검사 결과 확인하기]
+valid와 invalid, errors를 확인!
+ - touched, untouched : 이 필드에 접근했는지 확인
+---------------------------------
+<style>.hasError {border : 1px solid red; }</style>
+<input type="text" requried
+	name="username" ngModel #c="ngModel"
+	[class.hasError]="c.invalid && c.touched">
+---------------------------------
+사용자가 접근한 이후에만 에러를 표시한다.
+
+ - pristine, dirty : 값이 변경되지 않으면 pristine이 true이고, 변경되면 dirty값이 true이다. 내용을 변경했는데, 페이지를 벗어나려고 할때 표시할 수 있다.
+
+ - pending : 비동기 유효성 검사를 싲가했지만 아직 결과를 못받았을 때 true이다.
