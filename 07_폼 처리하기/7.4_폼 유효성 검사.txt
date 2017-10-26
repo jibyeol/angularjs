@@ -75,3 +75,6 @@ valid와 invalid, errors를 확인!
  - pristine, dirty : 값이 변경되지 않으면 pristine이 true이고, 변경되면 dirty값이 true이다. 내용을 변경했는데, 페이지를 벗어나려고 할때 표시할 수 있다.
 
  - pending : 비동기 유효성 검사를 싲가했지만 아직 결과를 못받았을 때 true이다.
+
+
+[템플릿 기반 폼에서 유효성 검사하기]
