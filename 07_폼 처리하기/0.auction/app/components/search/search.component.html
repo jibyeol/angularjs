@@ -1,25 +1,35 @@
-    <form [formGroup]="formModel"> 
+    <form [formGroup]="formModel" (ngSubmit)="onSearch()" novalidate>  <!-- 이벤트 핸들러 등록. novalidate : 브라우저에서 기본적으로 제공하는 유효성 검사를 막음 -->
     <!-- formModel 이라는 이름으로 폼 그룹 적용. 
         formModel은 SearchComponent에서 클래스 변수로 선언. -->
-        <div class="form-group">
+        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'title')">
             <label for="title">Product title :</label>
             <input type="text" id="title"
                    placeholder="Title" class="form-control"
                    formControlName="title">
                    <!-- input 엘리먼트는 title이라는 이름으로 폼 컨트롤을 적용. 
                     폼컨트롤 title은 SearchComponent의 formModel 폼 그룸 안에 있는 하위 항목이다. -->
+            <span class="help-block"
+                    [class.hidden]="!formModel.hasError('minlength', 'title')">
+                Type at least 3 characters
+            </span>
         </div>
-        <div class="form-group">
+        <div class="form-group" [class.has-error]="formModel.hasError('positivenumber', 'price')">
             <label for="price">Product price :</label>
             <input id="price"
                    type="number" min="0" step="any"
                    placeholder="Price" class="form-control"
                    formControlName="price">
+            <span class="help-block"
+                   [class.hidden]="!formModel.hasError('positivenumber', 'price')">
+               Price is not a positive number
+           </span>
         </div>
         <div class="form-group">
             <label for="category">Product category :</label>
             <select id="category" class="form-control"
                 formControlName="category">
+                <option value="-1">All categories</option>
+                <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
             </select>
         </div>
         <div class="form-group">
