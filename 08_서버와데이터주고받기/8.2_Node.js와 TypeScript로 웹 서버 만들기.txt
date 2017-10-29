@@ -1,0 +1,164 @@
+Node.js
+ - TypeScript로 만들 수 있다.
+ - 플랫폼에 영향받지 않고 서버처럼 독립된 애플리케이션을 만들 수 있다.
+ - HTTP와 웹소켓을 지원한다.
+
+8.2.1 간단한 웹 서버 만들기
+
+[프로젝트 폴더 구조]
+build : JavaScript로 변환된 Node.js 서버 코드
+client : Angular 애플리케이션 코드
+node_modules : 의존성 패키지 폴더
+server : TypeScript로 작성된 Node.js 서버 코드
+package.json : npm 설정 파일(Angular, Node.js 함께 사용)
+tsconfig.json : TypeScript 설정 파일
+
+> yarn init -y
+기본 설정으로 package.json을 구성
+
+hello_server.ts
+----------------------------------
+import * as http from 'http'; // ES6 문법이지만 TS에서도 쓸 수 있다.
+
+const server = http.createServer((request, response) => { 
+    response.writeHead(200, {'Content-Type' : 'text/plain'});
+    response.end('Hello World!');
+}); // 모든 요청을 HTTP 200 상태코드로 "Hello Wolrd!" 응답을 보냄
+
+const port = 8000;
+
+server.listen(port); // 서버 시작
+console.log('Listening on http://localhost:' + port);
+----------------------------------
+
+tsconfig.json
+----------------------------------
+{
+    "compilerOptions" : {
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "module": "commonjs", // 모듈 구성 방시은 CommonJS로 지정
+				// import 구문이 var http = required('http');로 변환
+        "outDir": "build", // 변환 코드는 build 폴더아래 .js로 저장
+        "target" : "ES5",
+        "lib": [ // ES6 표준인 find()를 써서 es2015 라이브러리를 추가한다. 
+		// es2015는 TypeScript에서 제공하는 ES6 폴라필 라이브러리다.
+            "es2015"
+        ]
+    },
+    "exclude": [
+        "node_modules", // 컴파일 대상에ㅓㅅ 제외
+        "client"
+    ]
+}
+----------------------------------
+
+> yarn add typescript
+typescript를 추가
+
+> yarn add -D @types/node
+Node.js용 타입 정의 파일 설치
+
+> yarn tsc
+javascript로 변환
+
+>node build/hello_server.js
+서버 실행
+
+
+8.2.2 JSON 데이터 제공하기
+-----------------------------------
+const server = http.createServer((request, response) => { 
+    response.writeHead(200, {'Content-Type' : 'application/json'});
+    response.end('{"message" : "Hello JSON!"}');
+});
+-----------------------------------
+서버 코드를 이렇게 하면 JSON 데이터를 전달한다.
+
+> yarn add express
+Express를 설치 - Node.js 웹 서버 프레임워크
+JSON 형태의 응답을 처리하는 RESTfull 웹 서비스를 만들자!
+
+> yarn add -D @types/express
+Express용 타입 정의 파일을 개발 의존성으로 설치
+서버 파일 컴파일 할때만 사용됨
+
+-----------------------------------
+import * as express from 'express';
+
+const app = express(); // Express 인스턴스 생성
+
+app.get('/', (req, res) => res.send('Hello from Express')); // HTTP GET 요청 처리
+app.get('/products', (req, res) => res.send('Get a request for products'));
+app.get('/reviews', (req, res) => res.send('Get a request for reviews'));
+
+const server = app.listen(8000, 'localhost', () => { // 8000 포트로 서버 시작
+    const {address, port} = server.address(); // 주소와 포트를 참조하기 위해 비구조화 문법 사용
+    console.log('Listenin on %s %s', address, port);
+})
+-----------------------------------
+
+
+8.2.3 TypeScript로 실시간 변환하고 로드하기
+> npm i -g typescript
+전역에 설치
+> tsc -w
+tsc 워치 모드
+typescript 코드가 변경된 때마다 자동으로 컴파일 되면 편하지만, 변경된 코드가 Node.js에 자동으로 적용되는 것은 아니다.
+자동으로 적용하려면 Nodemon같은 유틸리티를 사용하면 된다.
+>yarn add -D nodemon
+nodemon 설치
+> nodemon build/my-express-server.js
+실행 (난 안되길래 npm i -g nodemon 전역으로 설치해서 함)
+
+package.json에 아래처럼 추가한다.
+-----------------------------------
+  "scripts": {
+    "start": "node build/my-express-server.js",
+    "dev" : "nodemon build/my-express-server.js"
+  }
+-----------------------------------
+yarn dev 명령을 실행하면 변경될 때마다 자동으로 서버가 재시작되고
+yarn start 는 변경을 감지하지 않는 운영모드로 실행된다.
+
+
+8.2.4 상품 정보를 제공하는 RESTful API 추가하기
+-----------------------------------
+import * as express from 'express';
+
+class Product {
+    constructor(public id : number,
+                public title : string,
+                public price : number) {}
+}
+
+const products = [
+    new Product(0, 'First Product', 24.99),
+    new Product(1, 'Second Product', 64.99),
+    new Product(2, 'Third Product', 74.99)
+];
+
+function getProducts() : Product[] {
+    return products;
+}
+
+function getProductById(productId : number ) : Product {
+    return products.find(p => p.id == productId);
+}
+
+const app = express();
+
+app.get('/', (req, res) => res.send('The URL for product is http://localhost:8000/products'));
+app.get('/products', (req, res) => {
+    res.json(getProducts()); // json으로 응답을 보냄
+});
+app.get('/products/:id', (req, res) => {
+    res.json(getProductById(req.params.id)); // 주소에 인자가 있으면 Request 객체의 params 프로퍼티로 전달된다.
+});
+app.get('/reviews', (req, res) => res.send('Get a request for reviews'));
+
+const server = app.listen(8000, 'localhost', () => {
+    const {address, port} = server.address();
+    console.log('Listenin on %s %s', address, port);
+});
+-----------------------------------

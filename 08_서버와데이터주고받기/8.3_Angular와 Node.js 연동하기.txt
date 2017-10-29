@@ -1,0 +1,14 @@
+8.3.1 정적 리소스 (Static resource) 제공하기
+HTML 문서, 이미지, CSS, JavaScript 코드는 정적 리소스로 제공한다.
+node_modules 폴더의 패키지들도 정적 리소스라고 볼 수 있다.
+Express 프레임워크에서 정적 리소스 폴더를 지정할 수 있다.
+
+---------------------------------
+import * as path from 'path';
+
+app.use('/', express.static(path.resolve(__dirname, '..', 'client')));
+app.use('/node_modules', express.static(path.resolve(__dirname, '..', 'node_modules')));
+---------------------------------
+client 폴더와 node_modules 폴더는 정적 리소스를 제공하는 폴더로 지정되었다.
+여기서 OS에 관계없이 원하는 폴더를 지정하기 위해 path.resolve() 함수를 사용했다.
+'/' GET 요청은 Angular 정적 애플리케이션과 중복되므로 삭제한다.

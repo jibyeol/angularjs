@@ -1,5 +1,6 @@
 target/
 node_modules/
+build/
 bin/
 src/main/resources/static/built/
 !.mvn/wrapper/maven-wrapper.jar
