@@ -12,3 +12,45 @@ app.use('/node_modules', express.static(path.resolve(__dirname, '..', 'node_modu
 client 폴더와 node_modules 폴더는 정적 리소스를 제공하는 폴더로 지정되었다.
 여기서 OS에 관계없이 원하는 폴더를 지정하기 위해 path.resolve() 함수를 사용했다.
 '/' GET 요청은 Angular 정적 애플리케이션과 중복되므로 삭제한다.
+
+[NPM 공통 설정 파일]
+---------------------------------
+{
+  "name": "http_websocket_samples",
+  "private": true,
+  "scripts": {
+    "tsc": "tsc",
+    "start": "node build/my-express-server.js",
+    "dev": "nodemon build/my-express-server.js",
+    "devRest": "nodemon build/auction-rest-server.js",
+    "restServer": "nodemon build/auction-rest-server-angular.js",
+    "simpleWsServer": "node build/simple-websocket-server.js",
+    "twowayWsServer": "nodemon build/two-way-websocket-server.js"
+  },
+  "dependencies": {
+    "@angular/common": "^4.1.0",
+    "@angular/compiler": "^4.1.0",
+    "@angular/core": "^4.1.0",
+    "@angular/forms": "^4.1.0",
+    "@angular/http": "^4.1.0",
+    "@angular/platform-browser": "^4.1.0",
+    "@angular/platform-browser-dynamic": "^4.1.0",
+    "@angular/router": "^4.1.0",
+    "core-js": "^2.4.1",
+    "express": "^4.15.2",
+    "rxjs": "^5.3.1",
+    "systemjs": "0.19.47",
+    "typescript": "^2.3.3",
+    "ws": "^2.3.1",
+    "zone.js": "^0.8.10"
+  },
+  "devDependencies": {
+    "@types/express": "^4.0.35",
+    "@types/node": "^7.0.18",
+    "@types/ws": "^0.0.41",
+    "nodemon": "^1.11.0"
+  }
+}
+---------------------------------
+scripts 항목을 활용하면 npm이나 yarn에서 실행할 스크립트를 지정해 작업을 자동화할 수 있다.
+
