@@ -15,7 +15,7 @@ import 'rxjs/add/operator/map';
     `
 })
 class AppComponent{
-    produts : Array<string> = [];
+    products : Array<string> = [];
     theDataSource : Observable;
 
     constructor(private http : Http) {
@@ -27,9 +27,9 @@ class AppComponent{
         this.theDataSource.subscribe(
             data => {
                 if(Array.isArray(data)) {
-                    this.produts = data;
+                    this.products = data;
                 } else {
-                    this.produts.push(data);
+                    this.products.push(data);
                 }
             },
             err => console.log("Can't get products. Error code : %s, URL : %s", err.status, err.url),

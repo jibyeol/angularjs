@@ -9,7 +9,7 @@ System.config({
 
     map : {
         '@angular' : 'node_modules/@angular',
-        'rxjs' : 'mode_modules/rxjs'
+        'rxjs' : 'node_modules/rxjs'
     },
 
     packages : {
@@ -20,8 +20,8 @@ System.config({
         '@angular/forms' : {main : 'bundles/forms.umd.min.js'},
         '@angular/http' : {main : 'bundles/http.umd.min.js'},
         '@angular/platform-browser' : {main : 'bundles/platform-browser.umd.min.js'},
-        '@angular/paltform-browser-dynamic' : {main : 'bundles/paltform-browser-dynamic.umd.min.js'},
+        '@angular/platform-browser-dynamic' : {main : 'bundles/platform-browser-dynamic.umd.min.js'},
 
-        'app' : {main : 'main', defaultExtension : 'ts'}
+        'app' : {main : 'websocket-observable-service-subscribe', defaultExtension : 'ts'}
     }
 })

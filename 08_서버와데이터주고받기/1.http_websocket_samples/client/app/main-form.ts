@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
         <form #f="ngForm" (ngSubmit)="getProductById(f.value)">
             <label for="productID">Enter Product ID</label>
             <input id="productID" type="number" name="productID" ngModel>
-            <button type="submit>Find Product</button>
+            <button type="submit">Find Product</button>
         </form>
         <h2>{{productTitle}} {{productPrice}}</h2>
     `
