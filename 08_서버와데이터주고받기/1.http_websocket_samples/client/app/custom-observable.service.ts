@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 export class CustomObservableService {
     createObservableService() : Observable<Date> {
