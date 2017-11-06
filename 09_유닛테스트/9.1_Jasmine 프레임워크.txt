@@ -1,0 +1,67 @@
+- 유닛테스트 (Unit testing) : 컴포넌트나 함수 단위의 작은 코드 테스트. 입력 데이터를 바꿔가며 원하는 동작을 실행하는지 검사
+- 엔드 투 엔드 테스트 (end-to-end testing) : 애플리케이션이 잘 동작할때 사용자의 행동에 따라 각 부분이 정해진 대로 동작하는지 확인 -- Angular에서는 Protractor 라이브러리 필요
+
+http://mng.bz/0nv3 -- Jasmine 테스트
+Jasmine으로 만든 테스트 스크립트를 실행할 때는 Karma 테스트 러너를 사용
+
+9.1 Jasmine 프레임워크
+
+특정 행동에 대한 반응을 정의 (BDD, behavior-driven-development)으로 개발 진행
+
+Jasmine
+테스트케이스 하나 = 스펙(spec)
+하나 이상의 스펙을 묶은 것 = 스윗(suite)
+테스트 스윗은 describe() 함수로 정의
+이 함수 내용이 테스트 실행하는 과정
+스윗의 개별 스펙은 it()함수로 정의 - 코드 실행 결과를 검증하는 내용을 기술
+
+----------------------------------
+describe('MyCaculator', () => {
+	it('should know how to multiply', () => {
+		// 곱셈 결과를 확인하는 코드를 여기에 작성
+	});
+	it('should not divide by zero', () => {
+		// 0으로 나누는 테스트 케이스는 여기에 작성
+	})
+});
+----------------------------------
+테스트 프레임워크는 정의된 표현식을 평가해서 검증을 수행
+실패하면 에러발생
+expect()로 검증
+toBe()나 toEqual()과 같은 매처(matcher)를 붙여 사용
+
+----------------------------------
+expect(2+2).toEqual(4)
+----------------------------------
+
+----------------------------------
+expect(2+2).not.toEqual(5)
+----------------------------------
+true반환하면 통과, false 반환시 실패
+반대로 지정하려면 not을 붙여줌
+
+AppComponent가 잘생성되는지 확인
+----------------------------------
+import AppComponent from './app.component';
+
+describe('AppComponent', () => {
+	it('is successfully instantiated', () => {
+		const app = new AppComponent();
+		expect(app instanceof AppComponent).notEqual(true);
+	});
+});
+----------------------------------
+~~~.spec 으로 저장됨
+하나의 스펙만 있음
+
+개별 테스트를 진행하기 전에 실행할 코드 = beforeAll() or beforeEach() 셋업함수
+beforeAll : 스윗이 실행되기 전에 한번만 실행됨
+beforeEach : 개별 테스트 스펙이 실행되기 전에 한번씩 실행
+테스트 끝난 후 실행 = afterAll() or afterEach()
+
+it()으로 스펙이 여러개 있는데, 일부 스펙의 검증을 생략하려면, xit()으로 바꿔서 실행하면 된다. 전체를 생략하려면 describe()를 xdescribe()로 실행해라~
+
+
+9.1.2 Jasmine 설치하기
+
+> yarn add -D jasmine-core @types/jasmine
