@@ -1,0 +1,106 @@
+Angular에서 제공하는 TestBed 헬퍼 클래스로 모듈이나 컴포넌트, 프로바이더를 정의한다.
+TestBed
+ - configureTestingModule()
+ - createComponent()
+ - inject()
+
+@NgModule 대체하는 테스트모듈
+------------------------------
+beforeEach(() => {
+	TestBed.configureTestingModule({
+		imports : [ReactiveFormsModule, RouterTestingModule
+			, RouterTestingModule.withRoutes(routes)],
+		declarations : [AppComponent, HomeComponent, WeatherComponent],
+		providers : [{provide : WeatherService, useValue : {} }]
+	})
+});
+------------------------------
+beforeEach()로 테스트 스펙에 필요한 모듈이나 컴포넌트, 프로바이더를 미리 정의할 수 있다.
+
+inject()함수는 Angular 의존성 인젝터를 만들어서 테스트 케이스에 의존성을 주입하기 위해 사용한다.
+------------------------------
+inject([Router, Location], (router: Router, location: Location) => {
+	// 의존성으로 주입받은 객체 사용
+})
+------------------------------
+
+async() Zone라이브러리를 사용해 비동기 테스트실행
+비동기가 모두 끝나거나 타이머가 만료되기 전에는 테스트가 종료되지 않음
+------------------------------
+it('does something', async(inject([AClass], object => {
+	myPromise.then(() => {expect(true).toEqual(true);});
+}), 3000));
+------------------------------
+
+fakeAsync() 비동기 테스트이고, 원하는 시간을 지연시키는 테스트동작을 할 수 있다.
+------------------------------
+it('...', fakeAsync(() => {
+	// 평가식을 실항하기 전에 동작하는 비동기 코드
+
+	tick(1000); // 비동기 작업을 끝내려고 1초 지연
+	expect(...);
+}))
+------------------------------
+
+NgMatchers 인터페이스는 다음의 메처 제공
+- toBePromise : 프로미스어야함
+- toBeAnInstanceOf : 인자로 전달하는 클래스의 인자여야함
+- toHaveText : 인자로 전달하는 문자열이 엘리먼트의 문자열이어야한다.
+- toHavsCssClass : 인자로 전달된 css 클래스가 엘리먼트에 지정된 클래스중에 있어야한다.
+- toHavsCssStyle : 인자로 전달하는 CSS스타일이 엘리먼트의 스타일중에 있어야한다.
+- toImplement : 인자로 전달된 인터페이스로 구현된 클래스여야한다.
+- toContailError : 인자로 전달하는 문자열이 예외 객체에 있어야한다.
+- toThrowErrorWith : 평가하는 함수에서 에러가 발생하고, 인자로 전달하는 문자열이 이에러에 있어야한다.
+- toMatchPattern : 인자로 전달하는 정규표현식에 적합한 문자열이어야한다.
+
+9.2.1 서비스 테스트
+- 서버의 데이터를 하드코딩하고 서비스가 이 데이터를 사용하게 함
+class MockWeatherService implements WeatherService {
+	getWeather(){
+		return Observable.empty();
+	}
+}
+- fakeAsynct() 함수를 타이머나 콜백, 프로미스와 같은 비동기 함수를 동기함수 처럼 실행할 수 있다.
+
+9.2.2 라우터 테스트
+navigate()나 navigateUrl()을 사용
+------------------------------
+if('should be able to navigate to product details using commons API',
+	fakeAsync(inject([Router, Location], (router : Router, location : Location) => {
+		TestBed.createComponent(AppComponent); // 컴포넌트 인스턴스를 만듦
+		router.navigate(['/product', 0]);
+		tick(); // 비동기 흐름을 지연없이 단축시킴
+		export(location.path()).toBe('/product/0'); // 올바른 주소로 이동되었는지 확인
+	})
+));
+------------------------------
+
+------------------------------
+router.navigateByUrl('/products');
+...
+expect(location.path()).toBe('/products');
+------------------------------
+navigateByUrl은 URL을 인자로 받아 바로 Location.path로 구성한다.
+
+Location의 목객체인 SpyLocation을 사용할 수도 있다.
+뒤로가기, 앞으로가기로도 URL에서 해시 기호 부분이 어떻게 바뀌는지도 테스트할 수 있다.
+
+
+9.2.3 컴포넌트 테스트
+컴포넌트
+ - 클래스 : 메소드는 일반 함수를 테스트하듯이 함
+ - 템플릿 : 바인딩된 데이터가 제대로 표시되는지 확인
+TestBed.createComponent()는 ComponentFixture객체 반환. 컴포넌트를 테스트할 떄 이 객체를 사용하면 컴포넌트의 클래스와 네이티브 HTML 엘리먼트에 접근할 수 있어서 원하는 값 할당 ro 특정 엘리먼트 찾기도 할 수 있다.
+또한 detectChanges()로 변화감지 사이클을 직접 시작할 수 있다.
+expect()로 렌더링된 값이 잘 나오는지 확인가능
+
+------------------------------
+let fixture = TestBed.createComponent(ProductDetailComponent);
+let element = fixture.nativeElement;
+let component = fixture.componentInstance;
+component.product = {title : ;iPhone8', price : 849.99};
+
+fixture.detectChanges();
+expect(element.querySelector('h4').innerHTML).toBe('iPhone8')
+------------------------------
+

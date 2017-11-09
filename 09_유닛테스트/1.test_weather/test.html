@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Testing the Weather Application</title>
+		<base href="/">
+
+		<!-- TypeScript in-browser compiler -->
+		<script src="node_modules/typescript/lib/typescript.js"></script>
+
+		<!-- Polyfills -->
+		<script src="node_modules/reflect-metadata/Reflect.js"></script>
+
+		<!-- Jasmine -->
+		<link rel="stylesheet" href="node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+		<script src="node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+		<script src="node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+		<script src="node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+
+		<!-- Zone.js -->
+		<script src="node_modules/zone.js/dist/zone.js"></script>
+		<script src="node_modules/zone.js/dist/proxy.js"></script>
+		<script src="node_modules/zone.js/dist/sync-test.js"></script>
+		<script src="node_modules/zone.js/dist/jasmine-patch.js"></script>
+		<script src="node_modules/zone.js/dist/async-test.js"></script>
+		<script src="node_modules/zone.js/dist/fake-async-test.js"></script>
+		<script src="node_modules/zone.js/dist/long-stack-trace-zone.js"></script>
+
+		<!-- SystemJS -->
+		<script src="node_modules/systemjs/dist/system.src.js"></script>
+		<script src="systemjs.config.js"></script>
+	</head>
+	<body>
+		<script>
+            // 테스트 스펙을 불러오기 위해 파일 목록을 배열로 구성한다.
+			var SPEC_MODULES = [
+				'app/components/app.component.spec',
+				'app/components/weather.component.spec',
+				'app/services/weather.service.spec'
+			];
+
+            // Jasmine 테스트 환경이 두 번 실행됨. window.onload의 콜백함수를 orgOnload에 저장하고, 빈 콜백함수로 대체한다.
+            // Karma에서 생략해도 됨.
+			var orgOnload = window.onload;
+			window.onload = function(){};
+
+            // 테스트에 필요한 Angular 모듈을 로드
+			Promise.all([
+				System.import('@angular/core/testing'),
+				System.import('@angular/platform-browser-dynamic/testing')
+			])
+				.then(function (modules) { // 로드된 Angular 모듈을 지역 변수에 할당하고, 이 변수를 통해 테스트를 수행.
+					var testing = modules[0];
+					var browser = modules[1];
+
+                    // 테스트 환경 구성.
+                    // 애플리케이션에서 AppModule을 설정하던 내용은 BrowserDynamicTestModule로 대체
+					testing.TestBed.initTestEnvironment(
+						browser.BrowserDynamicTestingModule,
+						browser.platformBrowserDynamicTesting()
+					);
+					// Load all the spec files.
+					return Promise.all(SPEC_MODULES.map(function (module) {
+						return System.import(module);
+					}));
+				})
+				.then(orgOnload) // 테스트 환경과 테스트할 스펙파일 모두 로드되면 window.onload 이벤트 핸들러 실행하여 Jasmine 테스트 시작
+				.catch(console.error.bind(console));
+		</script>
+	</body>
+</html>
