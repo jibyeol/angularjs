@@ -23,7 +23,7 @@ import 'rxjs/add/operator/debounceTime';
             </div>
         </div>
         <div class="row">
-            <div *ngFor="let product of products | filter : 'title' : filterCriteria" class="col-sm-4 col-lg-4 col-md-4">
+            <div *ngFor="let product of products | async" class="col-sm-4 col-lg-4 col-md-4">
                 <auction-product-item [product]="product"></auction-product-item>
             </div>
         </div>
@@ -41,6 +41,12 @@ export default class HomeComponent{
             .subscribe(
                 value => this.filterCriteria = value,
                 error => console.error(error)
+            );
+        this.productService.searchEvent
+            .subscribe(
+                params => this.products = this.productService.search(params),
+                err => console.log("Cant't get products. Error code : %s, URL : %s"),
+                () => console.log('DONE')
             );
     }
 }
