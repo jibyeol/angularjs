@@ -1,7 +1,19 @@
 export function getProducts(params = <any>{}) : Product[] {
     let result = products;
     if(params.title) {
-        /// todo
+        result = result.filter(
+			p => p.title.toLowerCase().indexOf(params.title.toLowerCase()) !== -1
+		);
+	}
+	if(parseInt(params.price) && result.length > 0) {
+        result = result.filter(
+			p => p.price <= parseInt(params.price)
+		);
+	}
+	if(params.category && result.length > 0) {
+        result = result.filter(
+			p => p.categories.indexOf(params.category.toLowerCase()) !== -1
+		);
     }
     return products;
 }

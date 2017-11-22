@@ -29,8 +29,10 @@ export interface ProductSearchParams {
 
 @Injectable()
 export class ProductService {
+	searchEvent: EventEmitter = new EventEmitter();
+
 	constructor(private http : Http) {}
-    getProducts() : Observable<Product> {
+    getProducts() : Observable<Product[]> {
 		return this.http.get('/products')
 			.map(res => res.json());
 	}

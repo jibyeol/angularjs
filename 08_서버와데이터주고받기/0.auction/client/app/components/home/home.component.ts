@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Product, ProductService} from '../../services/product.service';
 import {FilterPipe} from '../pipes/filter.pipe';
+import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -30,7 +31,7 @@ import 'rxjs/add/operator/debounceTime';
     `
 })
 export default class HomeComponent{
-    products : Product[] = [];
+    products : Observable<Product[]>;
     titleFilter : FormControl = new FormControl();
     filterCriteria : string;
 

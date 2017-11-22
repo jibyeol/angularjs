@@ -31,7 +31,7 @@ Promise.all([ // 테스트에 필요한 Angular 모듈을 로드한다.
     .then(function() {
         return Promise.all(resolveTestFiles()); // resolveTestFiles() 함수를 실행해서 테스트 스펙이 정의된 파일을 로드한다.
     })
-    then(function() {
+    .then(function() {
         __karma__.start(); // 테스트를 시작한다.
     },
     function (error) {
